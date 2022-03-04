@@ -9,5 +9,24 @@
     "mongoose": "^6.2.4",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
-  }
+  },
+  "scripts": {
+    "start": "nodemon server.js",
+    "prod": "node server.js"
+  },
+  "name": "msg-board",
+  "description": "A Express + Vue practive for msg board",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N0Ball/Msg-Board.git"
+  },
+  "author": "N0-Ball",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/N0Ball/Msg-Board/issues"
+  },
+  "homepage": "https://github.com/N0Ball/Msg-Board#readme"
 }
