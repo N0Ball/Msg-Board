@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
-var schema = new mongoose.Schema({
-    name:{
+var msgSchema = new mongoose.Schema({
+    title:{
         type: String,
         required: true
     },
-    password:{
+    content:{
         type: String,
         required: true
     },
     status: String
 })
 
-const Userdb = mongoose.model('userdb', schema);
+const Messagedb = mongoose.model('messagedb', msgSchema);
 
-module.exports = Userdb;
+module.exports = Messagedb;

@@ -1,4 +1,4 @@
-var Userdb = require('../model/userModel');
+var Messagedb = require('../model/msgModel');
 
 exports.create = (req, res) => {
 
@@ -9,18 +9,18 @@ exports.create = (req, res) => {
         return;
     }
 
-    const user = new Userdb({
-        name: req.body.name,
-        password: req.body.password,
+    const msg = new Messagedb({
+        title: req.body.title,
+        content: req.body.content,
         status: req.body.status
     })
 
-    user.save(user)
+    msg.save(msg)
     .then(data => {
         res.send(data);
     }).catch(err => {
         res.status(500).send({
-            message: err.message || "Some error occurred while creating a user"
+            message: err.message || "Some error occurred while creating a message"
         })
     })
 
@@ -31,12 +31,12 @@ exports.find = (req, res) => {
     if(req.query.id){
         const id = req.query.id;
 
-        Userdb.findById(id)
+        Messagedb.findById(id)
         .then(data => {
 
             if (!data){
                 res.status(404).send({
-                    message: "User not found"
+                    message: "Message not found"
                 })
             }else{
                 res.send(data);
@@ -48,12 +48,12 @@ exports.find = (req, res) => {
         })
     }
 
-    Userdb.find()
-    .then(user => {
-        res.send(user);
+    Messagedb.find()
+    .then(msg => {
+        res.send(msg);
     }).catch(err => {
         res.status(500).send({
-            message: err.message || "Some error occurred while finding a user"
+            message: err.message || "Some error occurred while finding a message"
         })
     })
 }
@@ -68,18 +68,18 @@ exports.update = (req, res) => {
     }
 
     const id = req.params.id;
-    Userdb.findByIdAndUpdate(id, req.body)
+    Messagedb.findByIdAndUpdate(id, req.body)
     .then(data => {
         if(!data){
             res.status(404).send({
-                message: `Can't find user with ${id}. User not found!`
+                message: `Can't find message with ${id}. message not found!`
             });
         }else{
             res.send(data);
         }
     }).catch(e => {
         res.status(500).send({
-            message: e.message || "Error Updating user"
+            message: e.message || "Error Updating message'"
         })
     })
 
@@ -89,7 +89,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Userdb.findByIdAndDelete(id)
+    Messagedb.findByIdAndDelete(id)
     .then(data => {
         if (!data){
             res.status(404).send({
@@ -97,12 +97,12 @@ exports.delete = (req, res) => {
             })
         }else{
             res.status(200).send({
-                message: "User was deleted successfully!"
+                message: "message was deleted successfully!"
             })
         }
     }).catch(e => {
         res.status(500).send({
-            message: `Could not delete User with id = ${id}`
+            message: `Could not delete message with id = ${id}`
         })
     })
 }
