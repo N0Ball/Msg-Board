@@ -9,12 +9,22 @@ module.exports = function () {
             const bearer = bearerHeader.split(' ');
             const token = bearer[1];
 
-            if (jwt.verify(token, process.env.SECRET_TOKEN)){
-                req.token = token;
+            jwt.verify(token, process.env.SECRET_TOKEN, (err, data) => {
+
+                if (err){
+                    res.sendStatus(403);
+                }
+
+                try{
+                    req.user = data.name;
+                    req.id = data.id;
+                }catch(e){
+                    res.sendStatus(403);
+                }
+
                 next();
-            }else{
-                res.sendStatus(403);
-            }
+
+            })
 
 
         } else {

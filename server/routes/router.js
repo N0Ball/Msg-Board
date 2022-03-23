@@ -16,9 +16,9 @@ route.get('/users', users.find);
 route.put('/users/:id', users.update);
 route.delete('/users/:id', users.delete);
 
-route.post('/messages', messages.create);
-route.get('/messages', verify(), messages.find);
-route.put('/messages/:id', messages.update);
-route.delete('/messages/:id', messages.delete);
+route.post('/messages', verify(), messages.create);
+route.get('/messages', messages.find);
+route.put('/messages/:id', verify(), messages.update);
+route.delete('/messages/:id', verify(), messages.delete);
 
 module.exports = route;

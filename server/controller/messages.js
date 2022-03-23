@@ -12,7 +12,8 @@ exports.create = (req, res) => {
     const msg = new Messagedb({
         title: req.body.title,
         content: req.body.content,
-        status: req.body.status
+        user: req.user,
+        status: 1
     })
 
     msg.save(msg)
@@ -46,6 +47,26 @@ exports.find = (req, res) => {
                 message: e.message || "Something's wrong"
             })
         })
+
+        return;
+    }
+
+    if(req.query.user){
+        const user = req.query.user;
+
+        Messagedb.find({
+            user: {$regex: user}
+        })
+        .then(msg => {
+            res.send(msg);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while finding a message"
+            })
+        })
+
+        return;
+
     }
 
     Messagedb.find()
@@ -58,7 +79,7 @@ exports.find = (req, res) => {
     })
 }
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
 
     if (!req.body){
         res.status(400).send({
@@ -68,15 +89,26 @@ exports.update = (req, res) => {
     }
 
     const id = req.params.id;
+
+    validation = await validateOperation(id, req.user, res);
+
+    if (!validation){
+        return;
+    }
+
     Messagedb.findByIdAndUpdate(id, req.body)
     .then(data => {
+
         if(!data){
+
             res.status(404).send({
                 message: `Can't find message with ${id}. message not found!`
             });
+
         }else{
             res.send(data);
         }
+
     }).catch(e => {
         res.status(500).send({
             message: e.message || "Error Updating message'"
@@ -86,23 +118,69 @@ exports.update = (req, res) => {
 
 }
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
     const id = req.params.id;
 
-    Messagedb.findByIdAndDelete(id)
+    if(!id){
+
+        res.status(400).send({
+            message: "Id is required"
+        })
+
+        return;
+    }
+
+    validation = await validateOperation(id, req.user, res);
+
+    if(!validation){
+        return;
+    }
+
+    validation.status = 0;
+
+    Messagedb.findByIdAndUpdate(id, validation)
     .then(data => {
-        if (!data){
+
+        if(!data){
+
             res.status(404).send({
-                message: `Can't delete with id ${id}. Something is Wrong`
-            })
+                message: `Can't find message with ${id}. message not found!`
+            });
+
         }else{
-            res.status(200).send({
-                message: "message was deleted successfully!"
-            })
+            res.status(201).send({
+                message: 'Success'
+            });
         }
+
     }).catch(e => {
         res.status(500).send({
-            message: `Could not delete message with id = ${id}`
+            message: e.message || "Error Updating message'"
         })
+    })
+
+}
+
+async function validateOperation(id, user, res){
+    return Messagedb.findById(id)
+    .then(data => {
+
+        if(!data){
+            res.status(404).send({
+                message: `Can't find message with ${id}. message not found!`
+            });
+
+            return false;
+        }
+
+        if(data.user !=  user){
+            res.status(401).send({
+                message: `Can't find modify message that doesn't belongs to current user!`
+            });
+
+            return false;
+        }
+
+        return data;
     })
 }

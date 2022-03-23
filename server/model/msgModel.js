@@ -9,7 +9,11 @@ var msgSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    status: String
+    user:{
+        type: String,
+        required: true
+    },
+    status: Number
 })
 
 const Messagedb = mongoose.model('messagedb', msgSchema);

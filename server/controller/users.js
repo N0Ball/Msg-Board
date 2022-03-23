@@ -11,10 +11,10 @@ exports.create = async (req, res) => {
         return;
     }
 
-    userExist = await Userdb.find({
+    userExist = await Userdb.findOne({
         name: {$regex: req.body.name}
     }).then(data => {
-        if(data.length != 0){
+        if(data){
             res.status(400).send({
                 message: `User with name ${req.body.name} already registered`
             });
@@ -54,20 +54,60 @@ exports.find = (req, res) => {
             if (!data){
                 res.status(404).send({
                     message: "User not found"
-                })
+                });
             }else{
-                res.send(data);
+                res.send({
+                    id: data.id,
+                    name: data.name
+                });
             }
         }).catch(e => {
             res.status(500).send({
-                message: e.message || "Something's wrong"
+                message: e.message || "Something's wrong while finding user"
             })
+        });
+
+        return;
+    }
+
+    if(req.query.name){
+        const name = req.query.name;
+
+        Userdb.findOne({
+            name: {$regex: name}
         })
+        .then(data => {
+            if (!data){
+                res.status(404).send({
+                    message: "User not found"
+                });
+            }else{
+                res.send({
+                    id: data.id,
+                    name: data.name
+                });
+            }
+        }).catch(e => {
+            res.status(500).send({
+                message: e.message || "Something's wrong while finding user"
+            })
+        });
+
+        return;
     }
 
     Userdb.find()
     .then(user => {
-        res.send(user);
+        
+        users = Array();
+        user.forEach( e  => {
+            users.push({
+                id: e.id,
+                name: e.name
+            })
+        });
+        res.status(200).send(users);
+
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while finding a user"
