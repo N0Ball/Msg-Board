@@ -1,6 +1,8 @@
-var Userdb = require('../model/userModel');
+const bcrypt = require('bcrypt');
 
-exports.create = (req, res) => {
+const Userdb = require('../model/userModel');
+
+exports.create = async (req, res) => {
 
     if (!req.body){
         res.status(400).send({
@@ -9,15 +11,30 @@ exports.create = (req, res) => {
         return;
     }
 
-    const user = new Userdb({
-        name: req.body.name,
-        password: req.body.password,
-        status: req.body.status
-    })
+    userExist = await Userdb.find({
+        name: {$regex: req.body.name}
+    }).then(data => {
+        if(data.length != 0){
+            res.status(400).send({
+                message: `User with name ${req.body.name} already registered`
+            });
+            return true;
+        }
+        return false;
+    });
+
+    if (userExist){
+        return;
+    }
+
+    const user = new Userdb(req.body);
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
 
     user.save(user)
     .then(data => {
-        res.send(data);
+        res.status(201).send(data);
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while creating a user"
