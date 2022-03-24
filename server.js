@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const bodyparser = require('body-parser');
+const cors = require('cors');
 const path = require('path');
 
 const connectDB = require('./server/db/connection');
@@ -13,6 +14,7 @@ dotenv.config({path:'.env'});
 const PORT = process.env.PORT || 8080
 
 app.use(morgan('tiny'));
+app.use(cors());
 
 connectDB();
 

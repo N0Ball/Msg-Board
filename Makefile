@@ -22,7 +22,7 @@ up-dev:
 # Build the environment
 build:
 	docker volume create mongodbdata
-	docker build . -t msg-board-api
+	docker build . -t msg-board-api --no-cache
 
 # Start prod service
 up:
@@ -31,6 +31,9 @@ up:
 # Terminate prod service
 down:
 	docker compose down
+
+restart:
+	docker compose restart
 
 # Refresh prod db (This will remove all the stored data)
 refresh-db:
