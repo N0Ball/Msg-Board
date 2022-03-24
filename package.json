@@ -30,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/N0Ball/Msg-Board/issues"
   },
-  "homepage": "https://github.com/N0Ball/Msg-Board#readme"
+  "homepage": "https://github.com/N0Ball/Msg-Board#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.0.23"
+  }
 }

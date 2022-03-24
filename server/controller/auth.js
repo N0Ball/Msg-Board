@@ -50,3 +50,9 @@ exports.login = async (req, res) => {
         });
     }
 }
+
+exports.validate = async(req, res) => {
+    res.status(200).send({
+        message: "OK"
+    })
+}
