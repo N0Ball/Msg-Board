@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Board</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- <link rel="stylesheet" href="./assets/css/main.css"> -->
+    <link href="./assets/css/output.css" rel="stylesheet">
+</head>
+<body class="h-screen">
+    <header id="header">
+        <nav>
+            <div class="min-w-full h-20 flex flex-row justify-around bg-dark">
+                <div></div>
+                <div class="text-center flex items-center">
+                    <a href="/" class="text-3xl font-bold text-light">Message Board</a>
+                </div>
+                <div class="text-center flex items-center">
+                    <a href="" id="user" class="text-3xl font-bold text-light">SIGN UP/LOGIN</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main id="site-main" class="h-4/5 flex justify-center items-center">
+
+        <div class="m-auto container">
+            <div class="bg-light shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
+
+                <div class="hidden bg-red-100 border border-red text-red px-4 py-3 mb-3 rounded relative" role="alert" id="error-flash">
+                    <strong class="font-bold">ERROR!</strong>
+                    <span class="block sm:inline">Wrong username or password.</span>
+                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="hide('error-flash');">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-light-lighter text-sm font-bold mb-2" for="username">
+                        Username
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="username" type="text" placeholder="Username">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-light-lighter text-sm font-bold mb-2" for="password">
+                        Password
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3" id="password" type="password" placeholder="******************">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded" type="button" onclick="login();">
+                        Log In
+                    </button>
+                    <a class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker" href="#">
+                        Forgot Password?
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/auth.js"></script>
+    <script>
+
+        class MyLoaderManager extends LoaderManager{
+            postLoad(){
+                initHeader();
+            }
+        }
+        const manager = new MyLoaderManager();
+
+        manager.addLoader('check', {
+            headers: {
+                // 'Authorization':  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyM2JmODYyZjgzOGZhMWE5ZDhlMWFkZiIsIm5hbWUiOiJUZXN0VXNlciIsImlhdCI6MTY0ODE1NTQwMSwiZXhwIjoxNjQ4MTU2NDAxfQ.OUBr2PHeafN_cwiirHjnnr9biXEvYAfo0WHibqMxcUk"
+            }
+        });
+
+        manager.init();
+
+        function login(){
+            authLogin();
+        }
+
+    </script>
+</body>
+</html>

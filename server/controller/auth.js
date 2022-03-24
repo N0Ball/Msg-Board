@@ -5,6 +5,13 @@ var Userdb = require('../model/userModel');
 exports.login = async (req, res) => {
     const username = req.body.name;
     const password = req.body.password;
+
+    if (!username || !password){
+        res.status(400).send({
+            message: 'username or password not set!'
+        });
+        return;
+    }
     
     user = await Userdb.findOne({
         name: {$regex: username}
@@ -23,32 +30,36 @@ exports.login = async (req, res) => {
         })
     })
 
-    const validPassword = await bcrypt.compare(user.password, password);
+    bcrypt.compare(password, user.password)
+    .then(validation => {
+
+        if (!validation){
+    
+            res.status(400).send({
+                message: `Password incorrect`
+            })
             
-    if (validPassword){
+        }else{
+    
+            const token = jwt.sign(
+                {
+                    id: user._id,
+                    name: user.name
+                },
+                process.env.SECRET_TOKEN,
+                {
+                    expiresIn: process.env.TOKEN_EXPIRE
+                }
+            );
+    
+            res.status(200).send({
+                message: "Success",
+                token: `Bearer ${token}`
+            });
+        }
 
-        res.status(400).send({
-            message: `Password incorrect`
-        })
-        
-    }else{
-
-        const token = jwt.sign(
-            {
-                id: user._id,
-                name: user.name
-            },
-            process.env.SECRET_TOKEN,
-            {
-                expiresIn: process.env.TOKEN_EXPIRE
-            }
-        );
-
-        res.status(200).send({
-            message: "Success",
-            token: `Bearer ${token}`
-        });
-    }
+    });
+            
 }
 
 exports.validate = async(req, res) => {

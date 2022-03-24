@@ -25,10 +25,47 @@
     </header>
 
     <main id="site-main">
+        <div class="container">
+
+            <div class="box-nav d-flex justify-between">
+                <a href="/add-user" class="border-shadow">
+                    <span class="text-gradient">New User <i class="fas fa-user"></i></span>
+                </a>
+            </div>
+
+            <form action="/" method="post">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>@Email</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Username</td>
+                            <td>example@gmail.com</td>
+                            <td>Active</td>
+                            <td>
+                                <a href="#" class="btn border-shadow update">
+                                    <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+                                </a>
+                                <a href="#" class="btn border-shadow delete">
+                                    <span class="text-gradient"><i class="fas fa-times"></i></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
     </main>
 
     <script src="./assets/js/main.js"></script>
-    <script src="./assets/js/auth.js"></script>
     <script>
 
         class MyLoaderManager extends LoaderManager{

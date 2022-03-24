@@ -4,16 +4,23 @@ class LoaderManager{
 
     constructor(){
         this.loaders = Array();
+        this.loaderData = {};
     };
 
     addLoader(loaderName, requests={}, uri = API_URI){
-        this.loaders.push(new Loader(this, loaderName, requests, uri));
+        this.loaders.push(new Loader(loaderName, requests, uri));
+        this.loaderData[loaderName] = undefined;
     }
 
     async init(){
 
-        this.loaders.forEach(async loader => {
-            await loader.fetchUri();
+        this.loaders.forEach(loader => {
+            loader.fetchUri()
+            .then( res => {
+                loader.status = true;
+                this.loaderData[loader.NAME] = res;
+                this.update();
+            });
         });
 
     }
@@ -32,7 +39,7 @@ class LoaderManager{
         });
 
         if (finishLoad){
-            postLoad();
+            this.postLoad();
         }
 
     }
@@ -40,25 +47,38 @@ class LoaderManager{
     postLoad(){
         console.log("All Requested url are loaded!");
     }
+
+    getLoaderData(name){
+        return this.loaderData[name];
+    }
 }
 
 class Loader{
     
-    constructor(manager, name, requests, uri){
-        this.MANAGER = manager;
+    constructor(name, requests, uri){
         this.NAME = name;
         this.REQ = requests;
         this.URI = uri;
         this.status = false;
         this.data = undefined;
-
-        this.fetchUri();
     }
 
     async fetchUri(){
         this.data = await fetch(`${this.URI}/${this.NAME}`, this.REQ);
-        this.status = true;
-        this.MANAGER.update();
+
+        if(!this.data.ok){
+            return await this.data.status;
+        }
+
+        this.data = await this.data.json();
+        return this.data;
     }
 
+}
+
+function hide(id){
+
+    const target = document.getElementById(id);
+    target.classList.add('hidden');
+    
 }

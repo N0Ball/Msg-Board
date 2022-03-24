@@ -20,7 +20,7 @@ up-dev:
 	npm run start
 
 # Build the environment
-build:
+build: down
 	docker volume create mongodbdata
 	docker build . -t msg-board-api --no-cache
 
