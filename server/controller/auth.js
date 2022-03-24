@@ -21,6 +21,7 @@ exports.login = async (req, res) => {
             res.status(404).send({
                 message: `No user name found ${username}`
             })
+            return undefined;
         }else{
             return data;
         }
@@ -29,6 +30,10 @@ exports.login = async (req, res) => {
             message: e.message || "Error Login"
         })
     })
+
+    if (!user){
+        return;
+    }
 
     bcrypt.compare(password, user.password)
     .then(validation => {

@@ -8,17 +8,18 @@ const authManager = new authLoaderManager();
 
 function authLogin(){
 
-    const username = document.getElementById('username');
-    const password = document.getElementById('password');
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const formData = new URLSearchParams();
+    formData.append('name', username);
+    formData.append('password', password);
 
     authManager.addLoader('login', {
         method: 'POST',
-        body: JSON.stringify({
-            name: username,
-            password: password
-        }),
+        body: formData.toString(),
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/x-www-form-urlencoded'
         }
     });
 
@@ -29,11 +30,13 @@ function validateLogin(){
     const flash = document.getElementById('error-flash');
     let res = authManager.getLoaderData('login');
 
-    if (res == 500){
+    if (res == 500 || res == 400 || res == 404){
         flash.classList.remove('hidden');
+        return;
     }
     
-    console.log(res);
+    setCookie('token', res.token, 1000);
+    document.location.href = './index.html';
 }
 
 
@@ -43,6 +46,11 @@ function initHeader(){
     let login = manager.getLoaderData('check');
     
     if (login != 403){
-        user.innerHTML = "LOGOUT";
+        user.innerHTML = '<a onclick="logout();" class="text-3xl font-bold text-light">LOGOUT</a>';
+        return;
     }
+
+    user.innerHTML = '<a href="login.html" class="text-3xl font-bold text-light">SIGN UP/LOGIN</a>'
+    
+    eraseCookie('token');
 }

@@ -40,21 +40,11 @@
 
         manager.addLoader('check', {
             headers: {
-                // 'Authorization':  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyM2JmODYyZjgzOGZhMWE5ZDhlMWFkZiIsIm5hbWUiOiJUZXN0VXNlciIsImlhdCI6MTY0ODE1NTQwMSwiZXhwIjoxNjQ4MTU2NDAxfQ.OUBr2PHeafN_cwiirHjnnr9biXEvYAfo0WHibqMxcUk"
+                'Authorization':  getCookie('token')
             }
         });
 
         manager.init();
-
-        async function initHeader(){
-            const user = document.getElementById('user');
-            
-            let login = await manager.getLoaderData('check');
-            
-            if (login != 403){
-                user.innerHTML = "LOGOUT";
-            }
-        }
 
     </script>
 </body>

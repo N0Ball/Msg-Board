@@ -13,6 +13,7 @@ module.exports = function () {
 
                 if (err){
                     res.sendStatus(403);
+                    return;
                 }
 
                 try{
@@ -20,6 +21,7 @@ module.exports = function () {
                     req.id = data.id;
                 }catch(e){
                     res.sendStatus(403);
+                    return;
                 }
 
                 next();

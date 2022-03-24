@@ -17,8 +17,8 @@
                 <div class="text-center flex items-center">
                     <a href="/" class="text-3xl font-bold text-light">Message Board</a>
                 </div>
-                <div class="text-center flex items-center">
-                    <a href="" id="user" class="text-3xl font-bold text-light">SIGN UP/LOGIN</a>
+                <div class="text-center flex items-center" id="user">
+                    <a href="login.html" class="text-3xl font-bold text-light">SIGN UP/LOGIN</a>
                 </div>
             </div>
         </nav>
@@ -75,7 +75,7 @@
 
         manager.addLoader('check', {
             headers: {
-                // 'Authorization':  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyM2JmODYyZjgzOGZhMWE5ZDhlMWFkZiIsIm5hbWUiOiJUZXN0VXNlciIsImlhdCI6MTY0ODE1NTQwMSwiZXhwIjoxNjQ4MTU2NDAxfQ.OUBr2PHeafN_cwiirHjnnr9biXEvYAfo0WHibqMxcUk"
+                'Authorization':  getCookie('token')
             }
         });
 
