@@ -3,6 +3,12 @@ function loadCard(){
     const cardField = document.getElementById('card-field');
     const messages = manager.getLoaderData('messages');
 
+    let user = parseJwt(getCookie('token'));
+    
+    if (user){
+        user = user.name;
+    }
+
     messages.forEach( message => {        
         const card = document.createElement('card');
         card.classList.add('w-1/2');
@@ -17,6 +23,15 @@ function loadCard(){
             <header class="flex flex-row gap-3 items-center">
                 <i class="fa-solid fa-user rounded-full"></i>
                     <div> ${message.user} </div>
+        `
+        if (user == message.user){
+            cardContext += `
+            <i onclick="modifyContent(${message._id});" class="ml-3 fa-solid fa-pen"></i>
+            <i onclick="deleteMsg("${message._id}");" class="fa-solid fa-xmark text-red fa-lg"></i>
+            `
+        }
+
+        cardContext += `
             </header>
         
             <content class="grid grid-cols-4 gap-3">
@@ -48,4 +63,29 @@ function loadCard(){
         cardField.appendChild(card);
     });
 
+}
+
+let ID = undefined;
+
+class MsgLoaderManager extends LoaderManager{
+    postLoad(){
+        const res = MsgManager.getLoaderData(`messages/${ID}`);
+        console.log(res);
+    }
+}
+
+const MsgManager = new MsgLoaderManager();
+
+function deleteMsg(id){
+
+    ID = id
+
+    MsgManager.addLoader(`messages/${ID}`, {
+        method: "DELETE",
+        headers: {
+            'Authorization': getCookie('token')
+        }
+    });
+
+    MsgManager.init();
 }

@@ -32,10 +32,13 @@ function loadMessage(){
 
     <div class="relative">
         <input
+            id="reply-field" 
             class="pt-2 pb-2 pl-3 w-full h-11 bg-slate-100 rounded-lg placeholder:text-primary font-medium pr-20"
             type="text" placeholder="Write a reply" />
-        <span class="flex absolute right-3 top-2/4 items-center">
-            <i class="text-primary fa-solid fa-paper-plane fa-lg"></i>
+        <span class="flex absolute right-3 top-1/4 items-center">
+            <button onclick="replyMsg()">
+                <i class="text-primary fa-solid fa-paper-plane fa-lg"></i>
+            </button>
         </span>
     </div>
     `
@@ -72,4 +75,38 @@ function loadMessage(){
         messageField.appendChild(replyField);
     });
 
+}
+
+class ReplyLoaderManager extends LoaderManager{
+    postLoad(){
+        const res = replyManager.getLoaderData(`messages/reply/${ID}`);
+        const errorFlash = document.getElementById('error-flash')
+        
+        if (res == 403){
+            errorFlash.classList.remove('hidden');
+            return;
+        }
+
+        document.location.href = document.location.href;
+    }
+}
+
+const replyManager = new ReplyLoaderManager();
+
+function replyMsg(){
+    const replyField = document.getElementById('reply-field');
+
+    const formData = new URLSearchParams();
+    formData.append('content', replyField.value);
+
+    replyManager.addLoader(`messages/reply/${ID}`, {
+        method: "POST",
+        headers: {
+            "Authorization": getCookie('token'),
+            "Content-Type": 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+    });
+
+    replyManager.init();
 }

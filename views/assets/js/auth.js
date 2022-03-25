@@ -26,17 +26,47 @@ function authLogin(){
     authManager.init();
 }
 
+function signup(){
+   
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const formData = new URLSearchParams();
+    formData.append('name', username);
+    formData.append('password', password); 
+    
+    authManager.addLoader('users', {
+        method: 'POST',
+        body: formData.toString(),
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded'
+        }
+    });
+
+    authManager.init();
+}
+
 function validateLogin(){
     const flash = document.getElementById('error-flash');
     let res = authManager.getLoaderData('login');
+    let signupRes = authManager.getLoaderData('users');
 
     if (res == 500 || res == 400 || res == 404){
         flash.classList.remove('hidden');
         return;
     }
+
+    if(res){
+        setCookie('token', res.token, 1000);
+        document.location.href = './index.html';
+        return;
+    }
+
+    if(signupRes){
+        document.location.href = './login.html';
+        return;
+    }
     
-    setCookie('token', res.token, 1000);
-    document.location.href = './index.html';
 }
 
 
