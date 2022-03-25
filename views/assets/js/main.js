@@ -20,9 +20,6 @@ class LoaderManager{
                 loader.status = true;
                 this.loaderData[loader.NAME] = res;
                 this.update();
-                this.loaders = this.loaders.filter(e => {
-                    e == loader;
-                })
             });
         });
 
@@ -35,13 +32,14 @@ class LoaderManager{
         this.loaders.forEach(loader => {
 
             if(!loader.status){
-                finishLoad = true;
+                finishLoad = false;
                 return;
             }
 
         });
 
         if (finishLoad){
+            this.loaders = Array();
             this.postLoad();
         }
 
@@ -113,5 +111,14 @@ function eraseCookie(name) {
 
 function logout(){
     eraseCookie('token');
-    initHeader();
+    window.location.href = window.location.href;
+}
+
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
