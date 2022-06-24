@@ -1,7 +1,3 @@
-<script>
-export default {}
-</script>
-
 <template>
     <header id="header">
         <nav>
@@ -16,9 +12,43 @@ export default {}
                     <a href="./index" class="text-3xl font-bold text-light">Message Board</a>
                 </div>
                 <div class="text-center flex items-center mr-3" id="user">
-                    <a href="login" class="text-3xl font-bold text-light">SIGN UP/LOGIN</a>
+                    <a v-if="notLogin" href="login" class="text-3xl font-bold text-light">SIGN UP/LOGIN</a>
+                    <h1 v-if="!notLogin" class="text-3xl font-bold text-light mr-3"> {{ userName }} </h1>
+                    <a v-if="!notLogin" @click="logout()" href="" class="text-3xl font-bold text-light">LOGOUT</a>
                 </div>
             </div>
         </nav>
     </header>
 </template>
+
+<script>  
+import {ref} from 'vue';
+import LoginView from '../views/LoginView.vue';
+
+export default {
+
+    setup(){
+        const notLogin = ref(Boolean);
+        const userName = ref(String);
+
+        return {
+            notLogin,
+            userName
+        }
+    },
+
+    mounted(){
+        var userName = localStorage.getItem('username');
+        this.userName = userName;
+        this.notLogin = userName ? false : true;
+    },
+
+    methods: {
+        logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('token');
+        }
+    }
+}
+
+</script>
