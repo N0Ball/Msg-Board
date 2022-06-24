@@ -25,9 +25,31 @@ const router = createRouter({
     {
       path: '/post',
       name: 'post',
+      meta: { requireAuth: true },
       component: PostView
     }
   ]
 });
+
+router.beforeEach(async(to, from, next) => {
+
+  if (to.meta.requireAuth) {
+
+    const info = localStorage.getItem('token');
+
+    if (info) {
+
+      next();
+
+    } else {
+
+      next({ name: 'login' });
+
+    }
+
+  } else {
+    next();
+  }
+})
 
 export default router;
