@@ -19,6 +19,13 @@ services:
     volumes:
       - msgBoard-db:/data/db
 
+  vue-frontend:
+    build: client
+    volumes:
+      - ./client:/app
+    ports:
+      - 8030:3000
+
   frontend:
     image: nginx
     volumes:
