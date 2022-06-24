@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import PostView from '../views/PostView.vue';
 import MessageView from '../views/MessageView.vue';
+import UpdatePostView from '../views/UpdatePostView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ const router = createRouter({
       path: '/message',
       name: 'message',
       component: MessageView
+    },
+    {
+      path: '/update',
+      name: 'update',
+      component: UpdatePostView
     }
   ]
 });
