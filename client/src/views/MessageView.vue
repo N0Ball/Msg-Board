@@ -34,10 +34,11 @@
             <div class="relative">
                 <input
                     id="reply-field" 
+                    v-model="reply.content"
                     class="pt-2 pb-2 pl-3 w-full h-11 bg-slate-100 rounded-lg placeholder:text-primary font-medium pr-20"
                     type="text" placeholder="Write a reply" />
                 <span class="flex absolute right-3 top-1/4 items-center">
-                    <button onclick="replyMsg()">
+                    <button @click="replyMsg()">
                         <i class="text-primary fa-solid fa-paper-plane fa-lg"></i>
                     </button>
                 </span>
@@ -73,20 +74,27 @@ export default {
 
     setup(){
         const message = ref({});
+        const reply = {
+            content: ''
+        }
+        const id = ref('');
 
         return {
-            message
+            message,
+            reply,
+            id
         };
     },
 
     mounted(){
+        this.id = this.getParameterByName('id');
         this.loadMessage();
     },
 
     methods: {
 
         async loadMessage(){
-            this.message = await PostAPI.find(this.getParameterByName('id'));
+            this.message = await PostAPI.find(this.id);
         },
 
         getParameterByName(name, url = window.location.href) {
@@ -96,6 +104,16 @@ export default {
             if (!results) return null;
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        },
+
+        async replyMsg(){
+
+            let formData = new URLSearchParams();
+            formData.append('content', this.reply.content);
+
+            await PostAPI.reply(this.id, formData.toString());
+
+            this.loadMessage();
         }
     }
 }

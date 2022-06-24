@@ -50,5 +50,29 @@ export default {
             throw response.status;
         });
 
+    },
+
+    reply(id, data){
+
+        APISettings.headers.append("Authorization", localStorage.getItem('token'));
+
+        return fetch( APISettings.baseURL + '/messages/reply/' + id, {
+            method: 'POST',
+            headers: APISettings.headers,
+            body: data
+        } )
+        .then( function( response ){
+
+            if( response.status == 400){
+                return response.json();
+            }
+
+            if( response.status == 200){
+                return response.json();
+            }
+
+            throw response.status;
+        });
+
     }
 }
