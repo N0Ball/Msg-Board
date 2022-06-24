@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-brands-svg-icons": "^6.1.1",
+    "@fortawesome/free-regular-svg-icons": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "axios": "^0.26.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.2",
