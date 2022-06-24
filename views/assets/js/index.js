@@ -26,8 +26,8 @@ function loadCard(){
         `
         if (user == message.user){
             cardContext += `
-            <i onclick="modifyContent(${message._id});" class="ml-3 fa-solid fa-pen"></i>
-            <i onclick="deleteMsg("${message._id}");" class="fa-solid fa-xmark text-red fa-lg"></i>
+            <i onclick="modifyContent('${message._id}');" class="ml-3 fa-solid fa-pen"></i>
+            <i onclick="deleteMsg('${message._id}');" class="fa-solid fa-xmark text-red fa-lg"></i>
             `
         }
 
