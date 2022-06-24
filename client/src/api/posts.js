@@ -74,5 +74,28 @@ export default {
             throw response.status;
         });
 
+    },
+
+    delete(id){
+
+        APISettings.headers.append("Authorization", localStorage.getItem('token'));
+
+        return fetch( APISettings.baseURL + '/messages/' + id, {
+            method: 'DELETE',
+            headers: APISettings.headers,
+        } )
+        .then( function( response ){
+
+            if( response.status == 400){
+                return response.json();
+            }
+
+            if( response.status == 200 || response.status == 201){
+                return response.json();
+            }
+
+            throw response.status;
+        });
+
     }
 }
