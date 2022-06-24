@@ -23,7 +23,6 @@
 
 <script>  
 import {ref} from 'vue';
-import LoginView from '../views/LoginView.vue';
 
 export default {
 
