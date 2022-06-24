@@ -2,17 +2,23 @@ import { APISettings } from './config.js';
 
 export default {
 
-    find(){
-        return fetch( APISettings.baseURL + '/users', {
-            method: 'GET',
-            headers: APISettings.headers
+    login(data){
+        return fetch( APISettings.baseURL + '/login', {
+            method: 'POST',
+            headers: APISettings.headers,
+            body: data
         } )
         .then( function( response ){
-            if( response.status != 200 ){
-                throw response.status;
-            }else{
+
+            if( response.status == 400){
                 return response.json();
             }
+
+            if( response.status == 200){
+                return response.json();
+            }
+
+            throw response.status;
         });
     },
 
@@ -24,11 +30,16 @@ export default {
             body: data
         } )
         .then( function( response ){
-            if( response.status != 201 ){
-                throw response.status;
-            }else{
+
+            if( response.status == 400){
                 return response.json();
             }
+
+            if( response.status == 201){
+                return response.json();
+            }
+
+            throw response.status;
         });
 
     }

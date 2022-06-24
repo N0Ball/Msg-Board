@@ -1,6 +1,3 @@
-<script setup>
-</script>
-
 <template>
 
     <main id="site-main" class="h-4/5 flex justify-center items-center">
@@ -20,16 +17,16 @@
                     <label class="block text-light-lighter text-sm font-bold mb-2" for="username">
                         Username
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="username" type="text" placeholder="Username">
+                    <input v-model="form.username" class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="username" type="text" placeholder="Username">
                 </div>
                 <div class="mb-6">
                     <label class="block text-light-lighter text-sm font-bold mb-2" for="password">
                         Password
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3" id="password" type="password" placeholder="******************">
+                    <input v-model="form.password"  class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3" id="password" type="password" placeholder="******************">
                 </div>
                 <div class="flex items-center justify-between">
-                    <button class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded" type="button" onclick="login();">
+                    <button @click="loginUser();" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded" type="button">
                         Log In
                     </button>
                     <a class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker" href="./register">
@@ -42,3 +39,47 @@
     </main>
 
 </template>
+
+<script>
+import UserAPI from '../api/user.js';
+export default {
+
+    data(){
+        return {
+            fetchError: '',
+        }
+    },
+
+    setup(){
+
+        const form = {
+            username: '',
+            password: ''
+        };
+
+        return {
+            form,
+        };
+    },
+
+    methods: {
+
+        async loginUser() {
+
+            let formData = new URLSearchParams();
+            formData.append('name', this.form.username);
+            formData.append('password', this.form.password); 
+            
+            let result = await UserAPI.login(formData.toString());
+
+            if (result.token){
+                localStorage.setItem('token', result.token);
+                localStorage.setItem('username', this.form.username);
+            }
+
+            this.$router.push('/');
+        }
+
+    }
+}
+</script>
