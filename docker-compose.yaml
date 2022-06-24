@@ -19,6 +19,13 @@ services:
     volumes:
       - msgBoard-db:/data/db
 
+  frontend:
+    image: nginx
+    volumes:
+      - ./views:/usr/share/nginx/html
+    ports:
+      - 8080:80
+
 volumes:
   msgBoard-db: 
     external: true
