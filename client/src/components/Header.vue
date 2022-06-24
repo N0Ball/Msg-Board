@@ -9,7 +9,7 @@
                     </a>
                 </div>
                 <div class="text-center flex items-center">
-                    <a href="./index" class="text-3xl font-bold text-light">Message Board</a>
+                    <a href="./" class="text-3xl font-bold text-light">Message Board</a>
                 </div>
                 <div class="text-center flex items-center mr-3" id="user">
                     <a v-if="notLogin" href="login" class="text-3xl font-bold text-light">SIGN UP/LOGIN</a>

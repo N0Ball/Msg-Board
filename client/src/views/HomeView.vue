@@ -24,7 +24,7 @@
                 
                     <footer class="flex flex-row pt-7 gap-3 items-center">
                     
-                        <a v-bind:href="'./message.html?id=' + message._id" class="hover:bg-primary delay-100 duration-100 bg-secondary rounded-full py-1 px-2 text-xs">
+                        <a v-bind:href="'./message?id=' + message._id" class="hover:bg-primary delay-100 duration-100 bg-secondary rounded-full py-1 px-2 text-xs">
                             View Reply
                         </a>
                     
