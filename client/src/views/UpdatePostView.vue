@@ -56,9 +56,11 @@ export default {
 
         let titleField = document.getElementById('formTitle');
         titleField.value = post.title;
+        this.form.title = post.title;
 
         let contentField = document.getElementById('formContent');
         contentField.value = post.content;
+        this.form.content = post.content;
     },
 
     methods: {

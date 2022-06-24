@@ -6,7 +6,9 @@
                     <header class="flex flex-row gap-3 items-center">
                         <i class="fa-solid fa-user rounded-full"></i>
                         <div> {{message.user}} </div>
-                        <i v-show="own(message.user)" @click="modifyContent(message._id);" class="ml-3 fa-solid fa-pen"></i>
+                        <a v-bind:href="'update?id=' + message._id">
+                            <i v-show="own(message.user)" @click="modifyContent(message._id);" class="ml-3 fa-solid fa-pen"></i>
+                        </a>
                         <a href="" @click="deleteMsg(message._id);">
                             <i v-show="own(message.user)" class="fa-solid fa-xmark text-red fa-lg"></i>
                         </a>
