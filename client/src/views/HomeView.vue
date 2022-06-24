@@ -5,7 +5,11 @@
                 <div class="flex flex-col mt-5 border-light" v-bind:id="message._id">
                     <header class="flex flex-row gap-3 items-center">
                         <i class="fa-solid fa-user rounded-full"></i>
-                            <div> {{message.user}} </div>
+                        <div> {{message.user}} </div>
+                        <i v-show="own(message.user)" @click="modifyContent(message._id);" class="ml-3 fa-solid fa-pen"></i>
+                        <a href="" @click="deleteMsg(message._id);">
+                            <i v-show="own(message.user)" class="fa-solid fa-xmark text-red fa-lg"></i>
+                        </a>
                     </header>
         
                     <div class="grid grid-cols-4 gap-3">
@@ -45,8 +49,12 @@ export default{
     
     setup(){
         const posts = ref([]);
+        const own = (username) => {
+            return username == localStorage.getItem('username') ? true : false
+        }
         return {
             posts,
+            own
         }
     },
 
@@ -58,6 +66,12 @@ export default{
 
         async loadPost(){
             this.posts = await PostAPI.find();
+        },
+
+        async deleteMsg(id){
+            
+            await PostAPI.delete(id);
+            
         }
     }
 
