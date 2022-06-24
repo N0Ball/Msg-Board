@@ -19,16 +19,16 @@
                     <label class="block text-light-lighter text-sm font-bold mb-2" for="username">
                         Username
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="username" type="text" placeholder="Username">
+                    <input v-model="form.username" class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="username" type="text" placeholder="Username">
                 </div>
                 <div class="mb-6">
                     <label class="block text-light-lighter text-sm font-bold mb-2" for="password">
                         Password
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3" id="password" type="password" placeholder="******************">
+                    <input v-model="form.password" class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3" id="password" type="password" placeholder="******************">
                 </div>
                 <div class="flex items-center justify-between">
-                    <button class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded" type="button" onclick="signup();">
+                    <button @click="createUser()" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded" type="button">
                         Sign Up
                     </button>
                     <a class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker" href="./login">
@@ -40,3 +40,43 @@
 
     </main>
 </template>
+
+<script>
+import UserAPI from '../api/user.js';
+export default {
+
+    data(){
+        return {
+            fetchError: '',
+        }
+    },
+
+    setup(){
+
+        const form = {
+            username: '',
+            password: ''
+        }
+
+        const createUser = async() => {
+
+            let formData = new URLSearchParams();
+            formData.append('name', form.username);
+            formData.append('password', form.password); 
+            
+            await UserAPI.create(formData.toString());
+            
+            window.location.href = './login';
+        }
+
+        return {
+            form,
+            createUser
+        }
+    },
+
+    methods: {
+        
+    }
+}
+</script>
