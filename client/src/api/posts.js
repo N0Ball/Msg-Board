@@ -7,7 +7,7 @@ export default {
         let query = '/messages';
 
         if (id != undefined) {
-            query += id;
+            query += '?id=' + id;
         }
 
         return fetch( APISettings.baseURL + query, {
